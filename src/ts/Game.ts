@@ -1,0 +1,97 @@
+export class Game {
+    public bga: Bga<GruntzPlayer, GruntzGamedatas>;
+    private gamedatas: GruntzGamedatas;
+
+    constructor(bga: Bga<GruntzPlayer, GruntzGamedatas>) {
+        console.log('gruntz constructor');
+        this.bga = bga;
+
+        // Declare the State classes
+
+        // Uncomment the next line to show debug informations about state changes in the console. Remove before going to production!
+        // this.bga.states.logger = console.log;
+            
+        // Here, you can init the global variables of your user interface
+        // Example:
+        // this.myGlobalValue = 0;
+    }
+    
+    /*
+        setup:
+        
+        This method must set up the game user interface according to current game situation specified
+        in parameters.
+        
+        The method is called each time the game interface is displayed to a player, ie:
+        _ when the game starts
+        _ when a player refreshes the game page (F5)
+        
+        "gamedatas" argument contains all datas retrieved by your "getAllDatas" PHP method.
+    */
+    
+    setup(gamedatas: GruntzGamedatas) {
+        console.log( "Starting game setup" );
+        this.gamedatas = gamedatas;
+
+        // Example to add a div on the game area
+        this.bga.gameArea.getElement().insertAdjacentHTML('beforeend', `
+            <div id="player-tables"></div>
+        `);
+        
+        // Setting up player boards
+        Object.entries(gamedatas.players).forEach(([pId, player]) => {
+            const playerId = Number(pId);
+        });
+        
+        // TODO: Set up your game interface here, according to "gamedatas"
+        
+
+        // Setup game notifications to handle (see "setupNotifications" method below)
+        this.setupNotifications();
+
+        console.log( "Ending game setup" );
+    }
+
+    ///////////////////////////////////////////////////
+    //// Utility methods
+    
+    /*
+    
+        Here, you can defines some utility methods that you can use everywhere in your javascript
+        script. Typically, functions that are used in multiple state classes or outside a state class.
+    
+    */
+
+    
+    ///////////////////////////////////////////////////
+    //// Reaction to cometD notifications
+
+    /*
+        setupNotifications:
+        
+        In this method, you associate each of your game notifications with your local method to handle it.
+        
+        Note: game notification names correspond to "bga->notify->all" calls in your Game.php file.
+    
+    */
+    setupNotifications() {
+        console.log( 'notifications subscriptions setup' );
+        
+        // automatically listen to the notifications, based on the `notif_xxx` function on this class. 
+        // Uncomment the logger param to see debug information in the console about notifications.
+        this.bga.notifications.setupPromiseNotifications({
+            // logger: console.log
+        });
+    }
+    
+    // TODO: from this point and below, you can write your game notifications handling methods
+    
+    /*
+    Example:
+    async notif_cardPlayed( args ) {
+        // Note: args contains the arguments specified during you "notifyAllPlayers" / "notifyPlayer" PHP call
+        
+        // TODO: play the card in the user interface.
+    }
+    */
+}
