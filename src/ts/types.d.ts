@@ -1,5 +1,5 @@
 interface GruntzPlayer extends Player {
-    
+
 }
 
 interface GruntzGamedatas extends Gamedatas<GruntzPlayer> {
@@ -16,3 +16,9 @@ interface PlayerTurnArgs {
 /*
  * Describe here the types for your notif args
  */
+
+interface Unit {
+    type: "grunt" | "captain" | "truck" | "tank" | "plane";
+    location: [number, number];
+    attachment: "cannon" | "anti-air" | "transport" | "bomber" | "fighter";
+}

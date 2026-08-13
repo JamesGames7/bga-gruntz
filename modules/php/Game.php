@@ -19,14 +19,9 @@ declare(strict_types=1);
 namespace Bga\Games\Gruntz;
 
 use Bga\Games\Gruntz\States\Temp;
-use Bga\GameFramework\Components\Counters\PlayerCounter;
 
 class Game extends \Bga\GameFramework\Table
 {
-    public static array $CARD_TYPES;
-
-    public PlayerCounter $playerEnergy;
-
     /**
      * Your global variables labels:
      *
@@ -40,17 +35,6 @@ class Game extends \Bga\GameFramework\Table
     {
         parent::__construct();
 
-        $this->playerEnergy = $this->bga->counterFactory->createPlayerCounter('energy');
-
-        self::$CARD_TYPES = [
-            1 => [
-                "card_name" => clienttranslate('Troll'), // ...
-            ],
-            2 => [
-                "card_name" => clienttranslate('Goblin'), // ...
-            ],
-            // ...
-        ];
 
         /* example of notification decorator.
         // automatically complete notification args when needed
@@ -132,7 +116,6 @@ class Game extends \Bga\GameFramework\Table
         $result["players"] = $this->getCollectionFromDb(
             "SELECT `player_id` AS `id`, `player_score` AS `score` FROM `player`"
         );
-        $this->playerEnergy->fillResult($result);
 
         // TODO: Gather all information about current game situation (visible by player $currentPlayerId).
 
@@ -145,8 +128,6 @@ class Game extends \Bga\GameFramework\Table
      */
     protected function setupNewGame($players, $options = [])
     {
-        $this->playerEnergy->initDb(array_keys($players), initialValue: 2);
-
         // Set the colors of the players with HTML color code. The default below is red/green/blue/orange/brown. The
         // number of colors defined here must correspond to the maximum number of players allowed for the gams.
         $gameinfos = $this->getGameinfos();
